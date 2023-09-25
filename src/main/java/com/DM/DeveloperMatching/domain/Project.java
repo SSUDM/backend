@@ -28,10 +28,6 @@ public class Project {
     @OneToMany(mappedBy = "project",cascade = CascadeType.ALL) //양방향 잡을라고
     private List<Member> projectInMember = new ArrayList<>();
 
-    @OneToOne
-    @Column(name = "review")
-    private Review review;
-
     @Builder
     public Project(int memberCnt,Article article,ProjectStatus projectStatus) {
         this.memberCnt = memberCnt;
