@@ -42,16 +42,13 @@ public class Article {
     @Temporal(TemporalType.DATE)
     private Date due;
 
-    @Column(name = "project_information")
-    private String projectInfo;
-
     @Lob
     @Column(name = "project_image")
     private Byte[] projectImg;
 
     @Builder
     public Article(User articleOwner, String title, int maximumMember, String recPart, String recTech, Level recLevel,
-                   Date during, Date due, String projectInfo, Byte[] projectImg) {
+                   Date during, Date due, String content, Byte[] projectImg) {
         this.articleOwner = articleOwner;
         this.title = title;
         this.maximumMember = maximumMember;
@@ -60,7 +57,7 @@ public class Article {
         this.recLevel = recLevel;
         this.during = during;
         this.due = due;
-        this.projectInfo = projectInfo;
+        this.content = content;
         this.projectImg = projectImg;
     }
 
