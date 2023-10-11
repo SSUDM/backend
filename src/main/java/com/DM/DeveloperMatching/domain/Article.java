@@ -46,6 +46,23 @@ public class Article {
     @Column(name = "project_image")
     private Byte[] projectImg;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    public void update(String title, int maximumMember, String recPart, String recTech, Level recLevel,
+                       Date during, Date due, String content, Byte[] projectImg) {
+        this.title = title;
+        this.maximumMember = maximumMember;
+        this.recPart = recPart;
+        this.recTech = recTech;
+        this.recLevel = recLevel;
+        this.during = during;
+        this.due = due;
+        this.content = content;
+        this.projectImg = projectImg;
+    }
+
     @Builder
     public Article(User articleOwner, String title, int maximumMember, String recPart, String recTech, Level recLevel,
                    Date during, Date due, String content, Byte[] projectImg) {
@@ -59,6 +76,10 @@ public class Article {
         this.due = due;
         this.content = content;
         this.projectImg = projectImg;
+        this.project = Project.builder() // Article을 생성할 때 자동으로 Project도 생성
+                .memberCnt(1) // Project의 memberCnt를 Article의 maximumMember와 일치시킴
+                .projectStatus(ProjectStatus.RECRUITING) // 적절한 ProjectStatus 설정
+                .build();
     }
 
 }

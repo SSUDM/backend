@@ -17,10 +17,6 @@ public class Project {
     @Column(name = "member_count")
     private int memberCnt;
 
-    @OneToOne
-    @JoinColumn(name = "article_id")
-    private Article article;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "project_status")
     private ProjectStatus projectStatus;
@@ -29,9 +25,8 @@ public class Project {
     private List<Member> projectInMember = new ArrayList<>();
 
     @Builder
-    public Project(int memberCnt,Article article,ProjectStatus projectStatus) {
+    public Project(int memberCnt, ProjectStatus projectStatus) {
         this.memberCnt = memberCnt;
-        this.article = article;
         this.projectStatus = projectStatus;
     }
 
