@@ -16,9 +16,6 @@ public class Member {
     @Column(name = "member_status")
     private MemberStatus memberStatus;
 
-    @Column(name = "liked")
-    private boolean liked;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

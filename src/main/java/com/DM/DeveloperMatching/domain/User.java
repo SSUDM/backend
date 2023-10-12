@@ -48,6 +48,9 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)   //양방향 잡을라고
     private List<Member> userInMember = new ArrayList<>();
 
+    @OneToMany
+    private List<Likes> likes = new ArrayList<>();
+
     @Builder
     public User(String userName, String password, String phoneNum, String part, Level level, Double point, String introduction, String career) {
         this.userName = userName;

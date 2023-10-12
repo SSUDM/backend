@@ -9,23 +9,23 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review {
-
+public class Likes {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_id")
-    private Long rId;
+    @Column(name="likes_id")
+    private Long lId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User reviewUser;
+    private User user;
 
-    @Column(name = "review_content")
-    private String reviewContent;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @Builder
-    public Review(User reviewUser, String reviewContent) {
-        this.reviewUser = reviewUser;
-        this.reviewContent = reviewContent;
+    public Likes(User user, Project project) {
+        this.user = user;
+        this.project = project;
     }
 
 }
