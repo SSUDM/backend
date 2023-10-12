@@ -2,14 +2,14 @@ package com.DM.DeveloperMatching.controller;
 
 import com.DM.DeveloperMatching.domain.Article;
 import com.DM.DeveloperMatching.dto.Article.AddArticleRequest;
+import com.DM.DeveloperMatching.dto.Article.UpdateArticleRequest;
 import com.DM.DeveloperMatching.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,8 +29,33 @@ public class ArticleController {
                 .body(savedArticle);
     }
 
+    //모집 글 조회
+    @GetMapping("/articles")
+    public ResponseEntity<List<Article>> findAllArticles() {
+
+        List<Article> articles = articleService.findAll();
+
+        return ResponseEntity.ok()
+                .body(articles);
+    }
+
     //모집 글 수정
+    @PutMapping("/articles/{id}")
+    public ResponseEntity<Article> updateArticle(@PathVariable long id,
+                                                 @RequestBody UpdateArticleRequest request) {
+        Article updatedArticle = articleService.update(id, request);
+
+        return ResponseEntity.ok()
+                .body(updatedArticle);
+    }
 
     //모집 글 삭제
+    @DeleteMapping("/articles/{id}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable long id) {
+        articleService.delete(id);
+
+        return ResponseEntity.ok()
+                .build();
+    }
 
 }

@@ -16,16 +16,16 @@ public class Likes {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User likesUser;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    private Project project;
+    private Project likesProject;
 
     @Builder
-    public Likes(User user, Project project) {
-        this.user = user;
-        this.project = project;
+    public Likes(User likesUser, Project likesProject) {
+        this.likesUser = likesUser;
+        this.likesProject = likesProject;
     }
 
 }

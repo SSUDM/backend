@@ -23,14 +23,14 @@ public class User {
     @Column(name = "password",nullable = false)
     private String password;
 
-    @Column(name = "phone_num",nullable = false)
+    @Column(name = "phone_num")
     private String phoneNum;
 
-    @Column(name = "part",nullable = false)
+    @Column(name = "part")
     private String part;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "level",nullable = false)
+    @Column(name = "level")
     private Level level;
 
     @Column(name = "point")
@@ -42,13 +42,13 @@ public class User {
     @Column(name = "career")
     private String career;
 
-    @OneToMany(mappedBy = "articleOwner")
-    private List<Article> articles = new ArrayList<>();
+    /*@OneToMany(mappedBy = "articleOwner")
+    private List<Article> articles = new ArrayList<>();*/
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)   //양방향 잡을라고
     private List<Member> userInMember = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "likesUser", cascade = CascadeType.ALL)
     private List<Likes> likes = new ArrayList<>();
 
     @Builder
