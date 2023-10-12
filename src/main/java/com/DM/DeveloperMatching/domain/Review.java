@@ -12,7 +12,7 @@ public class Review {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
-    private String rId;
+    private Long rId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

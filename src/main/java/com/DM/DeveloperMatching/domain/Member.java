@@ -16,8 +16,8 @@ public class Member {
     @Column(name = "member_status")
     private MemberStatus memberStatus;
 
-    @Column(name = "like")
-    private boolean like;
+    @Column(name = "liked")
+    private Boolean like;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -33,5 +33,4 @@ public class Member {
         this.user = user;
         this.project = project;
     }
-
 }

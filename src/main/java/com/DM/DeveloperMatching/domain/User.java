@@ -14,7 +14,7 @@ public class User {
     @Column(name = "user_id")
     private Long uId;
 
-    @Column(name = "user_name",nullable = false)
+    @Column(name = "user_name")
     private String userName;
 
     @Column(name = "email",nullable = false)
@@ -26,11 +26,11 @@ public class User {
     @Column(name = "phone_num",nullable = false)
     private String phoneNum;
 
-    @Column(name = "part",nullable = false)
+    @Column(name = "part")
     private String part;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "level",nullable = false)
+    @Column(name = "level")
     private Level level;
 
     @Column(name = "point")
@@ -38,6 +38,9 @@ public class User {
 
     @Column(name = "introduction", length = 100)
     private String introduction;
+
+    @Column(name = "tech")
+    private String tech;
 
     @Column(name = "career")
     private String career;
@@ -49,7 +52,7 @@ public class User {
     private List<Member> userInMember = new ArrayList<>();
 
     @Builder
-    public User(String userName, String password, String phoneNum, String part, Level level, Double point, String introduction, String career) {
+    public User(String userName, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
         this.userName = userName;
         this.password = password;
         this.phoneNum = phoneNum;
@@ -57,8 +60,16 @@ public class User {
         this.level = level;
         this.point = point;
         this.introduction = introduction;
+        this.tech = tech;
         this.career = career;
     }
 
-
+    public void updateResume(String userName, String part, Level level, String introduction, String tech, String career) {
+        this.userName = userName;
+        this.part = part;
+        this.level = level;
+        this.introduction = introduction;
+        this.tech = tech;
+        this.career = career;
+    }
 }
