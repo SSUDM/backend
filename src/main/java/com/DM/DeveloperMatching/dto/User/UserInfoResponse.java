@@ -2,9 +2,12 @@ package com.DM.DeveloperMatching.dto.User;
 
 import com.DM.DeveloperMatching.domain.Level;
 import com.DM.DeveloperMatching.domain.User;
+import com.DM.DeveloperMatching.dto.Project.ProjectSummary;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +21,7 @@ public class UserInfoResponse {
     private String tech;
     private String career;
 
-    //내 프로젝트 추가
+    //private List<ProjectSummary> projectSummaries;
 
     public UserInfoResponse(User user) {
         this.userName = user.getUserName();
