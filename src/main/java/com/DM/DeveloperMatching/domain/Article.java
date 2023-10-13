@@ -1,5 +1,6 @@
 package com.DM.DeveloperMatching.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ public class Article {
     @Column(name = "article_id")
     private Long aId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne//(fetch = FetchType.LAZY) <= 이거 하면 article 조회할 때 오류남 why? 직렬화 문제 발생 proxy
     @JoinColumn(name = "user_id")
     private User articleOwner;
 
@@ -65,7 +66,7 @@ public class Article {
 
     @Builder
     public Article(User articleOwner, String title, int maximumMember, String recPart, String recTech, Level recLevel,
-                   Date during, Date due, String content, Byte[] projectImg) {
+                   Date during, Date due, String content/*, Byte[] projectImg*/) {
         this.articleOwner = articleOwner;
         this.title = title;
         this.maximumMember = maximumMember;

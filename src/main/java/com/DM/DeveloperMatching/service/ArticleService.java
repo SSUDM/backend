@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -24,6 +26,11 @@ public class ArticleService {
                 .orElseThrow(() -> new IllegalArgumentException("not found user"));
 
         return articleRepository.save(articleRequest.toEntity(user));
+    }
+
+    //모집 글 조회
+    public List<Article> findAll() {
+        return articleRepository.findAll();
     }
 
     //모집 글 수정
