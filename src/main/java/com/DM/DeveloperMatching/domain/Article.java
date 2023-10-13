@@ -66,7 +66,7 @@ public class Article {
 
     @Builder
     public Article(User articleOwner, String title, int maximumMember, String recPart, String recTech, Level recLevel,
-                   Date during, Date due, String content/*, Byte[] projectImg*/) {
+                   Date during, Date due, String content, Byte[] projectImg) {
         this.articleOwner = articleOwner;
         this.title = title;
         this.maximumMember = maximumMember;
