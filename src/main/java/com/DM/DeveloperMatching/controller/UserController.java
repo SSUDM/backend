@@ -15,10 +15,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/resume/{id}")
-    public ResponseEntity<User> saveResume(@PathVariable Long id,
-                                           @RequestBody UserRequestDto userRequestDto) {
-        User savedUser = userService.saveResume(userRequestDto, id);
+    @PostMapping("/resume")
+    public ResponseEntity<User> saveResume(@RequestBody UserRequestDto userRequestDto) {
+        Long userId = 1L;
+        User savedUser = userService.saveResume(userRequestDto, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedUser);
