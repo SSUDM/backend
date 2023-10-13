@@ -54,6 +54,15 @@ public class User {
     @OneToMany(mappedBy = "likesUser", cascade = CascadeType.ALL)
     private List<Likes> likes = new ArrayList<>();
 
+    public void updateResume(String userName, String part, Level level, String introduction, String tech, String career) {
+        this.userName = userName;
+        this.part = part;
+        this.level = level;
+        this.introduction = introduction;
+        this.tech = tech;
+        this.career = career;
+    }
+
     @Builder
     public User(String userName, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
         this.userName = userName;
