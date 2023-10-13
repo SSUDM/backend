@@ -1,6 +1,7 @@
 package com.DM.DeveloperMatching.service;
 
 import com.DM.DeveloperMatching.domain.User;
+import com.DM.DeveloperMatching.dto.User.UserInfoResponse;
 import com.DM.DeveloperMatching.dto.User.UserRequestDto;
 import com.DM.DeveloperMatching.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    //내 정보 가져오기
+    public UserInfoResponse getUserInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("not found user"));
+
+        UserInfoResponse userInfoResponse = new UserInfoResponse(user);
+
+        return userInfoResponse;
+    }
+
+    //이력서 저장
     public User saveResume(UserRequestDto userRequestDto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("not found user"));
@@ -24,7 +35,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
+    //이력서 조회
     public User findUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found user"));

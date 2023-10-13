@@ -28,9 +28,14 @@ public class ArticleService {
         return articleRepository.save(articleRequest.toEntity(user));
     }
 
-    //모집 글 조회
+    //모집 글 목록 조회
     public List<Article> findAll() {
         return articleRepository.findAll();
+    }
+
+    //모집 글 단건 조회
+    public Article findOne(Long userId) {
+        return articleRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("not found article"));
     }
 
     //모집 글 수정

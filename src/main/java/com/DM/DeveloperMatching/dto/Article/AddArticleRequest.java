@@ -5,7 +5,6 @@ import com.DM.DeveloperMatching.domain.Level;
 import com.DM.DeveloperMatching.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,5 +40,4 @@ public class AddArticleRequest {
                 .content(content)
                 .build();
     }
-
 }

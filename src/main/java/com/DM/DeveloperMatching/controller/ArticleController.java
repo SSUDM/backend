@@ -29,7 +29,7 @@ public class ArticleController {
                 .body(savedArticle);
     }
 
-    //모집 글 조회
+    //모집 글 목록 조회
     @GetMapping("/articles")
     public ResponseEntity<List<Article>> findAllArticles() {
 
@@ -37,6 +37,15 @@ public class ArticleController {
 
         return ResponseEntity.ok()
                 .body(articles);
+    }
+
+    //모집 글 단건 조회
+    @GetMapping("/articles/{id}")
+    public ResponseEntity<Article> findArticle(@PathVariable long id) {
+        Article article = articleService.findOne(id);
+
+        return ResponseEntity.ok()
+                .body(article);
     }
 
     //모집 글 수정
