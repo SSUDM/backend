@@ -6,10 +6,7 @@ import com.DM.DeveloperMatching.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,12 +15,30 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/resume")
-    public ResponseEntity<User> saveResume(@RequestBody UserRequestDto userRequestDto) {
-        Long userId = 1L;
-        User savedUser = userService.saveResume(userRequestDto, userId);
+    @PostMapping("/resume/{id}")
+    public ResponseEntity<User> saveResume(@PathVariable Long id,
+                                           @RequestBody UserRequestDto userRequestDto) {
+        User savedUser = userService.saveResume(userRequestDto, id);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedUser);
+    }
+
+
+    @GetMapping("/resume/{id}")
+    public ResponseEntity<User> getResume(@PathVariable Long id) {
+        User user = userService.findUserById(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(user);
+    }
+
+    @PutMapping("/resume/{id}")
+    public ResponseEntity<User> updateResume(@PathVariable Long id,
+                                             @RequestBody UserRequestDto userRequestDto) {
+        User updatedUser = userService.saveResume(userRequestDto, id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedUser);
     }
 }
