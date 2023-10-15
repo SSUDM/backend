@@ -3,6 +3,7 @@ package com.DM.DeveloperMatching.dto.User;
 import com.DM.DeveloperMatching.domain.Level;
 import com.DM.DeveloperMatching.domain.User;
 import com.DM.DeveloperMatching.dto.Project.ProjectSummary;
+import com.DM.DeveloperMatching.service.ProjectService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +21,9 @@ public class UserInfoResponse {
     private String introduction;
     private String tech;
     private String career;
+    private List<ProjectSummary> projectSummaries;
 
-    //private List<ProjectSummary> projectSummaries;
-
-    public UserInfoResponse(User user) {
+    public UserInfoResponse(User user, ProjectService projectService) {
         this.userName = user.getUserName();
         this.part = user.getPart();
         this.level = user.getLevel();
@@ -31,5 +31,6 @@ public class UserInfoResponse {
         this.introduction = user.getIntroduction();
         this.tech = user.getTech();
         this.career = user.getCareer();
+        this.projectSummaries = projectService.extractSummary(user.getUId());
     }
 }

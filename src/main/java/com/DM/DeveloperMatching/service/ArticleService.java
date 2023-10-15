@@ -3,6 +3,7 @@ package com.DM.DeveloperMatching.service;
 import com.DM.DeveloperMatching.domain.Article;
 import com.DM.DeveloperMatching.domain.User;
 import com.DM.DeveloperMatching.dto.Article.AddArticleRequest;
+import com.DM.DeveloperMatching.dto.Article.ArticleResponse;
 import com.DM.DeveloperMatching.dto.Article.UpdateArticleRequest;
 import com.DM.DeveloperMatching.repository.ArticleRepository;
 import com.DM.DeveloperMatching.repository.UserRepository;
@@ -21,11 +22,14 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     //모집 글 생성
-    public Article save(AddArticleRequest articleRequest, Long userId) {
+    public ArticleResponse save(AddArticleRequest articleRequest, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("not found user"));
 
-        return articleRepository.save(articleRequest.toEntity(user));
+        Article savedArticle = articleRepository.save(articleRequest.toEntity(user));
+        ArticleResponse articleResponse = new ArticleResponse(savedArticle);
+
+        return articleResponse;
     }
 
     //모집 글 목록 조회
@@ -34,8 +38,11 @@ public class ArticleService {
     }
 
     //모집 글 단건 조회
-    public Article findOne(Long userId) {
-        return articleRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("not found article"));
+    public ArticleResponse findOne(Long userId) {
+        Article article = articleRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("not found article"));
+        ArticleResponse articleResponse = new ArticleResponse(article);
+
+        return articleResponse;
     }
 
     //모집 글 수정

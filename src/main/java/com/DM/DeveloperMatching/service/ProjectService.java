@@ -2,6 +2,8 @@ package com.DM.DeveloperMatching.service;
 
 import com.DM.DeveloperMatching.domain.Project;
 import com.DM.DeveloperMatching.domain.User;
+import com.DM.DeveloperMatching.dto.Article.ArticleResponse;
+import com.DM.DeveloperMatching.dto.Project.ProjectSummary;
 import com.DM.DeveloperMatching.repository.ProjectRepository;
 import com.DM.DeveloperMatching.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -23,7 +25,7 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    /*//user가 한 프로젝트 목록 전체 조회
+    //user가 한 프로젝트 목록 전체 조회
     public List<Project> findAllUserProjects(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("not found"));
 
@@ -32,20 +34,20 @@ public class ProjectService {
                 .collect(Collectors.toList());
 
         return projects;
-    }*/
+    }
 
-    /*//user가 한 프로젝트 목록 요약 정보 추출
+    //user가 한 프로젝트 목록 요약 정보 추출
     public List<ProjectSummary> extractSummary(Long userId) {
         List<Project> projects = findAllUserProjects(userId);
 
         List<ProjectSummary> projectSummaries = projects.stream()
                 .map(project -> {
-                    Article article = project.getArticle();
+                    ArticleResponse article = new ArticleResponse(project.getArticle());
                     ProjectSummary summary = new ProjectSummary(article);
                     return summary;
                 })
                 .collect(Collectors.toList());
 
         return projectSummaries;
-    }*/
+    }
 }

@@ -14,12 +14,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ProjectService projectService;
 
     //내 정보 가져오기
     public UserInfoResponse getUserInfo(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("not found user"));
 
-        UserInfoResponse userInfoResponse = new UserInfoResponse(user);
+        UserInfoResponse userInfoResponse = new UserInfoResponse(user, projectService);
 
         return userInfoResponse;
     }
