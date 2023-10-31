@@ -64,8 +64,9 @@ public class User {
     }
 
     @Builder
-    public User(String userName, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
+    public User(String userName,String email, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
         this.userName = userName;
+        this.email = email;
         this.password = password;
         this.phoneNum = phoneNum;
         this.part = part;
