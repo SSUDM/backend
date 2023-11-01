@@ -45,10 +45,14 @@ public class User {
     @Column(name = "career")
     private String career;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole userRole;
+
     /*@OneToMany(mappedBy = "articleOwner")
     private List<Article> articles = new ArrayList<>();*/
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)   //양방향 잡을라고
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)   //양방향 잡을라고
     private List<Member> userInMember = new ArrayList<>();
 
     @OneToMany(mappedBy = "likesUser", cascade = CascadeType.ALL)
