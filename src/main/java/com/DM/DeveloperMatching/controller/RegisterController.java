@@ -23,9 +23,13 @@ public class RegisterController {
     private final UserService userService;
     private final RegisterAndLoginService registerAndLoginService;
 
-    //회원가입 등록
+    //회원가입 등록,
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+        //email, nickName 둘 다 중복 체크
+        if (registerAndLoginService.checkLoginEmailDuplicate(registerRequest.getEmail()) && registerAndLoginService.checkNickNameDuplicate(registerRequest.getNickName())) {
+            return ResponseEntity.badRequest().body("Email과 별명이 모두 중복됩니다.");
+        }
         //email 중복 체크
         if (registerAndLoginService.checkLoginEmailDuplicate(registerRequest.getEmail())) {
             return ResponseEntity.badRequest().body("중복되는 Email이 존재합니다.");
