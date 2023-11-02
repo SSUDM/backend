@@ -28,10 +28,10 @@ public class Article {
     private int maximumMember;
 
     @Column(name = "recruit_part")
-    private String recPart;
+    private String recPart; //list로 해야하지만 List<String> 사용 불가 table이나 class를 하나 더 만들어야할듯
 
     @Column(name = "recruit_tech")
-    private String recTech;
+    private String recTech; //list로 해야하지만 List<String> 사용 불가 table이나 class를 하나 더 만들어야할듯
 
     @Enumerated(EnumType.STRING)
     @Column(name = "recruit_level")
@@ -66,7 +66,7 @@ public class Article {
 
     @Builder
     public Article(User articleOwner, String title, int maximumMember, String recPart, String recTech, Level recLevel,
-                   Date during, Date due, String content/*, Byte[] projectImg*/) {
+                   Date during, Date due, String content, Byte[] projectImg) {
         this.articleOwner = articleOwner;
         this.title = title;
         this.maximumMember = maximumMember;

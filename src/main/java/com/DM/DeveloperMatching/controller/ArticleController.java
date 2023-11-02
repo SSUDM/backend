@@ -2,6 +2,7 @@ package com.DM.DeveloperMatching.controller;
 
 import com.DM.DeveloperMatching.domain.Article;
 import com.DM.DeveloperMatching.dto.Article.AddArticleRequest;
+import com.DM.DeveloperMatching.dto.Article.ArticleResponse;
 import com.DM.DeveloperMatching.dto.Article.UpdateArticleRequest;
 import com.DM.DeveloperMatching.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +21,15 @@ public class ArticleController {
 
     //모집 글 생성
     @PostMapping("/articles")
-    public ResponseEntity<Article> createArticle(@RequestBody AddArticleRequest articleRequest) {
-
+    public ResponseEntity<ArticleResponse> createArticle(@RequestBody AddArticleRequest articleRequest) {
         Long userId = 1L;
-        Article savedArticle = articleService.save(articleRequest, userId);
+        ArticleResponse savedArticle = articleService.save(articleRequest, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedArticle);
     }
 
-    //모집 글 조회
+    //모집 글 목록 조회
     @GetMapping("/articles")
     public ResponseEntity<List<Article>> findAllArticles() {
 
@@ -37,6 +37,15 @@ public class ArticleController {
 
         return ResponseEntity.ok()
                 .body(articles);
+    }
+
+    //모집 글 단건 조회
+    @GetMapping("/articles/{id}")
+    public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
+        ArticleResponse article = articleService.findOne(id);
+
+        return ResponseEntity.ok()
+                .body(article);
     }
 
     //모집 글 수정
@@ -57,5 +66,7 @@ public class ArticleController {
         return ResponseEntity.ok()
                 .build();
     }
+
+
 
 }

@@ -5,7 +5,6 @@ import com.DM.DeveloperMatching.domain.Level;
 import com.DM.DeveloperMatching.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +14,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 public class AddArticleRequest {
-
     private User articleOwner;
     private String title;
     private int maximumMember;
@@ -41,5 +39,4 @@ public class AddArticleRequest {
                 .content(content)
                 .build();
     }
-
 }
