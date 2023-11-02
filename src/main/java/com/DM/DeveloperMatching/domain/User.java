@@ -17,6 +17,9 @@ public class User {
     @Column(name = "user_name",nullable = false)
     private String userName;
 
+    @Column(name = "nickname",nullable = false)
+    private String nickName;
+
     @Column(name = "email",nullable = false)
     private String email;
 
@@ -39,27 +42,46 @@ public class User {
     @Column(name = "introduction", length = 100)
     private String introduction;
 
+    @Column(name = "tech")
+    private String tech;
+
     @Column(name = "career")
     private String career;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole userRole;
 
     /*@OneToMany(mappedBy = "articleOwner")
     private List<Article> articles = new ArrayList<>();*/
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)   //양방향 잡을라고
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)   //양방향 잡을라고
     private List<Member> userInMember = new ArrayList<>();
 
     @OneToMany(mappedBy = "likesUser", cascade = CascadeType.ALL)
     private List<Likes> likes = new ArrayList<>();
 
-    @Builder
-    public User(String userName, String password, String phoneNum, String part, Level level, Double point, String introduction, String career) {
+    public void updateResume(String userName, String part, Level level, String introduction, String tech, String career) {
         this.userName = userName;
+        this.part = part;
+        this.level = level;
+        this.introduction = introduction;
+        this.tech = tech;
+        this.career = career;
+    }
+
+    @Builder
+    public User(String userName, String nickName, String email, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
+        this.userName = userName;
+        this.nickName = nickName;
+        this.email = email;
         this.password = password;
         this.phoneNum = phoneNum;
         this.part = part;
         this.level = level;
         this.point = point;
         this.introduction = introduction;
+        this.tech = tech;
         this.career = career;
     }
 
