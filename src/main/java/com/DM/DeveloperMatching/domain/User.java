@@ -17,6 +17,9 @@ public class User {
     @Column(name = "user_name",nullable = false)
     private String userName;
 
+    @Column(name = "nickname",nullable = false)
+    private String nickName;
+
     @Column(name = "email",nullable = false)
     private String email;
 
@@ -68,8 +71,9 @@ public class User {
     }
 
     @Builder
-    public User(String userName,String email, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
+    public User(String userName, String nickName, String email, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
         this.userName = userName;
+        this.nickName = nickName;
         this.email = email;
         this.password = password;
         this.phoneNum = phoneNum;

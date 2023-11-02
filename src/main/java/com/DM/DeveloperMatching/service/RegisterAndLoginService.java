@@ -29,7 +29,7 @@ public class RegisterAndLoginService {
      * 중복되면 return true
      */
     public boolean checkLoginEmailDuplicate(String email) {
-        return userRepository.existsByLoginEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
     /**
@@ -39,6 +39,15 @@ public class RegisterAndLoginService {
      */
     public boolean checkUserNameDuplicate(String userName) {
         return userRepository.existsByUserName(userName);
+    }
+
+    /**
+     * 회원가입 할 때 작성하는 nickName 중복 체크
+     * 회원가입 기능 구현시 사용
+     * 중복되면 return true
+     */
+    public boolean checkNickNameDuplicate(String nickName) {
+        return userRepository.existsByNickName(nickName);
     }
 
     /**
@@ -66,19 +75,29 @@ public class RegisterAndLoginService {
      * email이 존재하지 않거나 password가 일치하지 않으면 return null
      */
     public User login(LoginRequest loginRequest) {
-        Optional<User> findByLoginEmail = userRepository.findByLoginEmail(loginRequest.getEmail());
+        Optional<User> findByLoginEmail = userRepository.findByEmail(loginRequest.getEmail());
 
         //loginEmail과 일치하는 User가 없으면 return null
         if (findByLoginEmail.isEmpty()) {
             return null;
         }
+        System.out.println("findByLoginEmail.get() = " + findByLoginEmail.get());
 
         User user = findByLoginEmail.get();
 
+        System.out.println("user = " + user);
+
+        System.out.println("user.getPassword() = " + user.getPassword());
+        System.out.println("loginRequest.getPassword() = " + loginRequest.getPassword());
         //찾은 User의 password와 입력된 password가 다르면 return null
         if (!user.getPassword().equals(loginRequest.getPassword())) {
             return null;
         }
+
+//        // 비밀번호 검증: 입력받은 비밀번호와 암호화된 비밀번호를 비교
+//        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
+//            return null;
+//        }
 
         return user;
     }
@@ -113,7 +132,7 @@ public class RegisterAndLoginService {
             return null;
         }
 
-        Optional<User> findByEmail = userRepository.findByLoginEmail(email);
+        Optional<User> findByEmail = userRepository.findByEmail(email);
         if (findByEmail.isEmpty()) {
             return null;
         }

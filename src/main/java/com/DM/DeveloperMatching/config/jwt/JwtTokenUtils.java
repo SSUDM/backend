@@ -15,7 +15,8 @@ import java.util.Date;
 
 @Service
 public class JwtTokenUtils {
-     @Autowired private static JwtProperties jwtProperties;
+//     @Autowired private static JwtProperties jwtProperties;
+
 
     /**
      * JWT 토큰 발급
@@ -23,13 +24,15 @@ public class JwtTokenUtils {
      * Claim에 userId(User 테이블에 저장되는 id), email을 저장할 것
      * 만료기간은 1일로 설정
      */
-    public static String createToken(long userId, String email, String key,long expireTimeMs) {
+    public static String createToken(long userId,String email, String key, long expireTimeMs) {
 //        Date date = new Date();
 //        Date expiration = new Date(date.getTime() + Duration.ofDays(1).toMillis());
 
         Claims claims = Jwts.claims();
         claims.put("userId", userId);
+//        claims.put("nickName", nickName);
         claims.put("email", email);
+
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)

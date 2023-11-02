@@ -22,7 +22,6 @@ public class ArticleController {
     //모집 글 생성
     @PostMapping("/articles")
     public ResponseEntity<ArticleResponse> createArticle(@RequestBody AddArticleRequest articleRequest) {
-
         Long userId = 1L;
         ArticleResponse savedArticle = articleService.save(articleRequest, userId);
 
@@ -67,5 +66,7 @@ public class ArticleController {
         return ResponseEntity.ok()
                 .build();
     }
+
+
 
 }
