@@ -13,10 +13,9 @@ import java.time.Duration;
 import java.util.Date;
 
 
-@RequiredArgsConstructor
 @Service
 public class JwtTokenUtils {
-    @Autowired private final JwtProperties jwtProperties;
+     @Autowired private static JwtProperties jwtProperties;
 
     /**
      * JWT 토큰 발급
@@ -24,9 +23,9 @@ public class JwtTokenUtils {
      * Claim에 userId(User 테이블에 저장되는 id), email을 저장할 것
      * 만료기간은 1일로 설정
      */
-    public String createToken(String userId,String email, String key) {
-        Date date = new Date();
-        Date expiration = new Date(date.getTime() + Duration.ofDays(1).toMillis());
+    public static String createToken(long userId, String email, String key,long expireTimeMs) {
+//        Date date = new Date();
+//        Date expiration = new Date(date.getTime() + Duration.ofDays(1).toMillis());
 
         Claims claims = Jwts.claims();
         claims.put("userId", userId);
@@ -34,8 +33,8 @@ public class JwtTokenUtils {
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                .setIssuedAt(date)
-                .setExpiration(expiration)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTimeMs))
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
@@ -44,9 +43,9 @@ public class JwtTokenUtils {
     /**
      * secretkey를 사용해서 Token Parsing
      */
-    public Claims extractClaims(String token, String secretKey) {
+    public static Claims extractClaims(String token, String secretKey) {
         Claims parsingBody = Jwts.parser()
-                .setSigningKey(jwtProperties.getSecretKey())
+                .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -56,7 +55,7 @@ public class JwtTokenUtils {
     /**
      * JWT 토큰 유효성 검증
      */
-    public boolean validateToken(String token,String secretKey) {
+    public static boolean validateToken(String token,String secretKey) {
         try {
             extractClaims(token, secretKey);
             return true;
@@ -68,7 +67,7 @@ public class JwtTokenUtils {
     /**
      * Claim에서 userId를 추출
      */
-    public String extractUserId(String token, String secretKey) {
+    public static String extractUserId(String token, String secretKey) {
         return extractClaims(token, secretKey)
                 .get("userId").toString();
     }
@@ -76,7 +75,7 @@ public class JwtTokenUtils {
     /**
      * Claim에서 email을 추출
      */
-    public String extractUserEmail(String token, String secretKey) {
+    public static String extractUserEmail(String token, String secretKey) {
         return extractClaims(token, secretKey)
                 .get("email").toString();
     }
@@ -84,7 +83,7 @@ public class JwtTokenUtils {
     /**
      * 발급된 Token이 만료 시간이 지났는지 check
      */
-    public boolean isExpired(String token, String secretKey) {
+    public static boolean isExpired(String token, String secretKey) {
         Date expiredDate = extractClaims(token, secretKey).getExpiration();
 
         //Token의 만료날짜가 현재 시간의 이전 시간인지 check
