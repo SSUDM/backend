@@ -45,8 +45,8 @@ public class User {
     @Column(name = "career")
     private String career;
 
-    /*@OneToMany(mappedBy = "articleOwner")
-    private List<Article> articles = new ArrayList<>();*/
+    @OneToMany(mappedBy = "articleOwner")
+    private List<Article> articles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)   //양방향 잡을라고
     private List<Member> userInMember = new ArrayList<>();
@@ -74,5 +74,9 @@ public class User {
         this.introduction = introduction;
         this.tech = tech;
         this.career = career;
+    }
+
+    public void exam(List<Article> articles) {
+        this.articles = articles;
     }
 }

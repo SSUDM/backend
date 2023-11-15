@@ -57,5 +57,4 @@ public class ArticleController {
         return ResponseEntity.ok()
                 .build();
     }
-
 }

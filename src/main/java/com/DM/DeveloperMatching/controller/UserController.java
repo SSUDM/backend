@@ -2,11 +2,14 @@ package com.DM.DeveloperMatching.controller;
 
 import com.DM.DeveloperMatching.domain.User;
 import com.DM.DeveloperMatching.dto.User.UserRequestDto;
+import com.DM.DeveloperMatching.service.RecommendService;
 import com.DM.DeveloperMatching.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

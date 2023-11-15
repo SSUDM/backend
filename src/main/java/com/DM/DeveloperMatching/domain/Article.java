@@ -1,6 +1,5 @@
 package com.DM.DeveloperMatching.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -82,5 +81,4 @@ public class Article {
                 .projectStatus(ProjectStatus.RECRUITING) // 적절한 ProjectStatus 설정
                 .build();
     }
-
 }
