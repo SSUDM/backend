@@ -19,10 +19,12 @@ public class RegisterRequest {
     @NotBlank(message = "이메일을 반드시 입력해주세요.")
     private String email; //회원 아이디 역할
 
+    private String authEmailNumber;
+
     @NotBlank(message = "비밀번호를 반드시 입력해주세요.")
     private String password;
 
-    private String passwordCheck;
+//    private String passwordCheck;
 
     //비밀번호 암호화 X
     public User toEntity() {
@@ -44,5 +46,9 @@ public class RegisterRequest {
                 .build();
     }
 
+    public void setAuthEmailNumber(String userName,String authEmailNumber) {
+        this.userName = userName;
+        this.authEmailNumber = authEmailNumber;
+    }
 }
 

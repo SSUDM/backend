@@ -81,14 +81,8 @@ public class RegisterAndLoginService {
         if (findByLoginEmail.isEmpty()) {
             return null;
         }
-        System.out.println("findByLoginEmail.get() = " + findByLoginEmail.get());
-
         User user = findByLoginEmail.get();
 
-        System.out.println("user = " + user);
-
-        System.out.println("user.getPassword() = " + user.getPassword());
-        System.out.println("loginRequest.getPassword() = " + loginRequest.getPassword());
         //찾은 User의 password와 입력된 password가 다르면 return null
         if (!user.getPassword().equals(loginRequest.getPassword())) {
             return null;

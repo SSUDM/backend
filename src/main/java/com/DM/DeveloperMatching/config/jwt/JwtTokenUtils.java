@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,8 @@ import java.util.Date;
 
 
 @Service
+@Getter
 public class JwtTokenUtils {
-//     @Autowired private static JwtProperties jwtProperties;
-
 
     /**
      * JWT 토큰 발급
@@ -24,35 +24,38 @@ public class JwtTokenUtils {
      * Claim에 userId(User 테이블에 저장되는 id), email을 저장할 것
      * 만료기간은 1일로 설정
      */
-    public static String createToken(long userId,String email, String key, long expireTimeMs) {
-//        Date date = new Date();
-//        Date expiration = new Date(date.getTime() + Duration.ofDays(1).toMillis());
+    public static String createToken(long userId, String email, String key, long expireTimeMs) {
+//        Date now = new Date();
+//        Date expiryDate = new Date(now.getTime());
+//        System.out.println("Token will expire at: " + expiryDate);
 
         Claims claims = Jwts.claims();
         claims.put("userId", userId);
-//        claims.put("nickName", nickName);
         claims.put("email", email);
 
-
         return Jwts.builder()
+                .setClaims(claims)
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expireTimeMs))
-                .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
     }
+
 
     /**
      * secretkey를 사용해서 Token Parsing
      */
     public static Claims extractClaims(String token, String secretKey) {
-        Claims parsingBody = Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return parsingBody;
+        // Bearer 부분 제거
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        System.out.println("token = " + token);
+        Claims body = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+//        System.out.println("body = " + body.getIssuedAt());
+//        System.out.println("body.getExpiration() = " + body.getExpiration());
+        return body;
     }
 
     /**
@@ -70,9 +73,9 @@ public class JwtTokenUtils {
     /**
      * Claim에서 userId를 추출
      */
-    public static String extractUserId(String token, String secretKey) {
-        return extractClaims(token, secretKey)
-                .get("userId").toString();
+    public static Long extractUserId(String token, String secretKey) {
+        return Long.valueOf(extractClaims(token, secretKey)
+                .get("userId").toString());
     }
 
     /**
@@ -86,10 +89,31 @@ public class JwtTokenUtils {
     /**
      * 발급된 Token이 만료 시간이 지났는지 check
      */
-    public static boolean isExpired(String token, String secretKey) {
-        Date expiredDate = extractClaims(token, secretKey).getExpiration();
+    /**
+     * 발급된 Token이 만료 시간이 지났는지 check
+     */
+    public static boolean isExpired(String jwtToken, String secretKey) {
+        try {
+            Claims claims = extractClaims(jwtToken, secretKey);
+            System.out.println("claims = " + claims);
 
-        //Token의 만료날짜가 현재 시간의 이전 시간인지 check
-        return expiredDate.before(new Date());
+            Date expiration = claims.getExpiration();
+            System.out.println("expiration = " + expiration);
+
+            Date now = new Date();
+            System.out.println("Token expiration time: " + expiration);
+            System.out.println("Current time: " + now);
+            return expiration.before(now);
+        } catch (Exception e) {
+            System.out.println("Error checking if token is expired: " + e.getMessage());
+            return true;
+        }
+
+//        Date expiredDate = extractClaims(jwtToken, secretKey).getExpiration();
+        // Token의 만료 날짜가 지금보다 이전인지 check
+//        return expiredDate.before(new Date());
     }
+
+
+
 }
