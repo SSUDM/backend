@@ -19,8 +19,6 @@ public class RegisterRequest {
     @NotBlank(message = "이메일을 반드시 입력해주세요.")
     private String email; //회원 아이디 역할
 
-    private String authEmailNumber;
-
     @NotBlank(message = "비밀번호를 반드시 입력해주세요.")
     private String password;
 
@@ -44,11 +42,6 @@ public class RegisterRequest {
                 .email(this.email)
                 .password(encodedPassword)
                 .build();
-    }
-
-    public void setAuthEmailNumber(String userName,String authEmailNumber) {
-        this.userName = userName;
-        this.authEmailNumber = authEmailNumber;
     }
 }
 

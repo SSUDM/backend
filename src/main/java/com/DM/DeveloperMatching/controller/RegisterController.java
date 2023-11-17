@@ -58,20 +58,20 @@ public class RegisterController {
     }
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-        boolean isNicknameDuplicate = registerAndLoginService.checkNickNameDuplicate(registerRequest.getNickName());
-        boolean isEmailDuplicate = registerAndLoginService.checkLoginEmailDuplicate(registerRequest.getEmail());
-        if (isEmailDuplicate || isNicknameDuplicate) {
-            StringBuilder errorMessage = new StringBuilder();
-            if (isEmailDuplicate) {
-                errorMessage.append("중복되는 Email이 존재합니다.");
-            }
-            if (isNicknameDuplicate) {
-                errorMessage.append("중복되는 별명이 존재합니다.");
-            }
-            return ResponseEntity.badRequest().body(errorMessage.toString());
-        }
+//        boolean isNicknameDuplicate = registerAndLoginService.checkNickNameDuplicate(registerRequest.getNickName());
+//        boolean isEmailDuplicate = registerAndLoginService.checkLoginEmailDuplicate(registerRequest.getEmail());
+//        if (isEmailDuplicate || isNicknameDuplicate) {
+//            StringBuilder errorMessage = new StringBuilder();
+//            if (isEmailDuplicate) {
+//                errorMessage.append("중복되는 Email이 존재합니다.");
+//            }
+//            if (isNicknameDuplicate) {
+//                errorMessage.append("중복되는 별명이 존재합니다.");
+//            }
+//            return ResponseEntity.badRequest().body(errorMessage.toString());
+//        }
 
-        registerAndLoginService.register1(registerRequest);
+        registerAndLoginService.register2(registerRequest);
         return ResponseEntity.ok().body("회원가입을 성공하였습니다.");
     }
 
