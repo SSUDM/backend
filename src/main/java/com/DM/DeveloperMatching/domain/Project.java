@@ -21,17 +21,21 @@ public class Project {
     @Column(name = "project_status")
     private ProjectStatus projectStatus;
 
+    //    @Column(name = "likes")
+    private int likes;
+
     @OneToMany(mappedBy = "project",cascade = CascadeType.ALL) //양방향 잡을라고
     private List<Member> projectInMember = new ArrayList<>();
 
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)    //Json 무한 루프 문제 발생
     private Article article;                                      //@JsonBackReference를 사용하면 Project에서
-                                                                    //article 접근도 안됨
+    //article 접근도 안됨
 
     @Builder
-    public Project(int memberCnt, ProjectStatus projectStatus) {
+    public Project(int memberCnt, ProjectStatus projectStatus,int likes) {
         this.memberCnt = memberCnt;
         this.projectStatus = projectStatus;
+        this.likes = likes;
     }
 
 
