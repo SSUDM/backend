@@ -2,7 +2,6 @@ package com.DM.DeveloperMatching.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +47,9 @@ public class User {
     @Column(name = "career")
     private String career;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private UserRole userRole;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "role")
+//    private UserRole userRole;
 
     /*@OneToMany(mappedBy = "articleOwner")
     private List<Article> articles = new ArrayList<>();*/

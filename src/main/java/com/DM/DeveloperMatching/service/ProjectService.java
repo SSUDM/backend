@@ -1,9 +1,11 @@
 package com.DM.DeveloperMatching.service;
 
+import com.DM.DeveloperMatching.domain.Member;
 import com.DM.DeveloperMatching.domain.Project;
 import com.DM.DeveloperMatching.domain.User;
 import com.DM.DeveloperMatching.dto.Article.ArticleResponse;
 import com.DM.DeveloperMatching.dto.Project.ProjectSummary;
+import com.DM.DeveloperMatching.dto.Project.TeamMate;
 import com.DM.DeveloperMatching.repository.ProjectRepository;
 import com.DM.DeveloperMatching.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -50,4 +52,25 @@ public class ProjectService {
 
         return projectSummaries;
     }
+    //프로젝트 참여 중인 팀원 조회
+    public List<TeamMate> getTeamMates(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("projectId에 해당하는 프로젝트를 찾을 수 없습니다: " + projectId));
+
+        List<Member> teamMembers = project.getProjectInMember();
+
+        List<TeamMate> teamMates = teamMembers.stream()
+                .map(member -> new TeamMate(member.getUser().getUserName()))
+                .collect(Collectors.toList());
+
+        return teamMates;
+    }
+
+
+    //프로젝트 요청한 인원 조회
+
+
+    //인기 프로젝트 목록
+
+
 }

@@ -32,9 +32,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	//D
+	//DB
 	implementation 'com.mysql:mysql-connector-j'
-	runtimeOnly 'com.h2database:h2'
+//	runtimeOnly 'com.h2database:h2'
 
 	//jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
@@ -54,7 +54,16 @@ dependencies {
 //	implementation 'io.jsonwebtoken:jjwt-api:0.9.1'
 //	implementation 'io.jsonwebtoken:jjwt-impl:0.9.1'
 //	implementation 'io.jsonwebtoken:jjwt-jackson:0.9.1'
-//
+
+	//mail
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+//	implementation 'javax.mail:javax.mail-api:1.6.2'
+//	implementation name: 'javax.mail', version: '1.6.2'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 }
 
 tasks.named('test') {
