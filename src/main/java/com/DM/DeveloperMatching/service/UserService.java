@@ -17,9 +17,9 @@ public class UserService {
     public User saveResume(UserRequestDto userRequestDto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("not found user"));
-
+        String result = String.join(", ", userRequestDto.getTech());
         user.updateResume(userRequestDto.getUserName(), userRequestDto.getPart(), userRequestDto.getLevel(),
-                userRequestDto.getIntroduction(), userRequestDto.getTech(), userRequestDto.getCareer());
+                userRequestDto.getIntroduction(), result, userRequestDto.getCareer());
 
         return userRepository.save(user);
     }

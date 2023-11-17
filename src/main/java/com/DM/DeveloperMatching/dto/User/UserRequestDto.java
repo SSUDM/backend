@@ -16,6 +16,6 @@ public class UserRequestDto {
     private String part;
     private Level level;
     private String introduction;
-    private String tech;
+    private List<String> tech;
     private String career;
 }

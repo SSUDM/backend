@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.DM.DeveloperMatching.domain.Level.MASTER;
 import static com.DM.DeveloperMatching.domain.Level.SENIOR;
+import static java.lang.Double.NaN;
 
 @RequiredArgsConstructor
 @Service
@@ -110,9 +112,6 @@ public class RecommendService {
         List<Article> articles = user.getArticles();
 
         Collections.sort(articles, Comparator.comparing(Article::getDue));
-        for(Article a : articles) {
-            System.out.println(a.getTitle());
-        }
         List<User> users = userRepository.findAll();
 
         List<User> result = new ArrayList<>();
@@ -161,27 +160,35 @@ public class RecommendService {
         return " AND a.recLevel IN (" + inQueries + ")";
     }
 
-    public int vectorP(String part) {
+    public List<Integer> vectorP(String part) {
         if(part.equals("BackEnd")) {
-            return 1;
+            return new ArrayList<Integer>(Arrays.asList(1, 0, 0, 0, 0));
         }
-        else {
-            return 0;
+        else if(part.equals("FrontEnd")) {
+            return new ArrayList<Integer>(Arrays.asList(0, 1, 0, 0, 0));
         }
+        else if(part.equals("Android")) {
+            return new ArrayList<Integer>(Arrays.asList(0, 0, 1, 0, 0));
+        }
+        else if(part.equals("IOS")) {
+            return new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0));
+        }
+        else
+            return new ArrayList<>(Arrays.asList(0, 0, 0, 0, 1));
     }
 
-    public int vectorL(Level level) {
+    public List<Integer> vectorL(Level level) {
         if(level == MASTER) {
-            return 2;
+            return new ArrayList<>(Arrays.asList(1, 0, 0));
         } else if(level == SENIOR) {
-            return 1;
+            return new ArrayList<>(Arrays.asList(0, 1, 0));
         } else {
-            return 0;
+            return new ArrayList<>(Arrays.asList(0, 0, 1));
         }
     }
 
-    public List<Integer> vectorT(String tech) {
-        final String[] techs = {"Spring Boot", "Spring", "React", "Vue.js", "Jpa", "Django", "Html", "Css", "Kotlin", "Java Script"};
+    public List<Integer> vectorTechBack(String tech) {
+        final String[] techs = {"Spring Boot", "Spring", "Jpa", "Django","Kotlin"};
         Map<String, Integer> vectors = new HashMap<>();
         for (String t : techs) {
             vectors.put(t, tech.contains(t) ? 1 : 0);
@@ -189,23 +196,49 @@ public class RecommendService {
         return new ArrayList<Integer>(vectors.values());
     }
 
-    public double cosineSimilarity(User user, Article article) {
-        List<Integer> vectorC = vectorT(user.getTech());
-        List<Integer> vectorD = vectorT(article.getRecTech());
-        vectorC.add(vectorP(user.getPart()));
-        vectorC.add(vectorL(user.getLevel()));
-        vectorD.add(vectorP(article.getRecPart()));
-        vectorD.add(vectorL(article.getRecLevel()));
-        double dotProduct = 0.0;
-        double normA = 0.0;
-        double normB = 0.0;
+    public List<Integer> vectorTechFront(String tech) {
+        final String[] techs = {"React", "Vue.js", "Html", "Css", "Java Script"};
+        Map<String, Integer> vectors = new HashMap<>();
+        for (String t : techs) {
+            vectors.put(t, tech.contains(t) ? 1 : 0);
+        }
+        return new ArrayList<Integer>(vectors.values());
+    }
 
-        for (int i = 0; i < vectorC.size(); i++) {
-            dotProduct += vectorC.get(i) * vectorD.get(i);
-            normA += Math.pow(vectorC.get(i), 2);
-            normB += Math.pow(vectorD.get(i), 2);
+    public Double cosineSimilarity(User user, Article article) {
+        Double result = 0.0;
+
+        List<List<Integer>> userVector = new ArrayList<>();
+        userVector.add(vectorP(user.getPart()));
+        userVector.get(0).addAll(vectorL(user.getLevel()));
+        userVector.add(vectorTechBack(user.getTech()));
+        userVector.add(vectorTechFront(user.getTech()));
+        List<List<Integer>> proVector = new ArrayList<>();
+        proVector.add(vectorP(article.getRecPart()));
+        proVector.get(0).addAll(vectorL(article.getRecLevel()));
+        proVector.add(vectorTechBack(article.getRecTech()));
+        proVector.add(vectorTechFront(article.getRecTech()));
+
+        for(int i = 0; i < userVector.size(); i++) {
+            if(!CS(userVector.get(i), proVector.get(i)).isNaN()) {
+                result += CS(userVector.get(i), proVector.get(i));
+            }
         }
 
-        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        return result;
+    }
+
+    public Double CS(List<Integer> vectorA, List<Integer> vectorB) {
+        Double dotProduct = 0.0;
+        Double normA = 0.0;
+        Double normB = 0.0;
+
+        for (int i = 0; i < vectorA.size(); i++) {
+            dotProduct += vectorA.get(i) * vectorB.get(i);
+            normA += Math.pow(vectorA.get(i), 2);
+            normB += Math.pow(vectorB.get(i), 2);
+        }
+        Double result = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        return result;
     }
 }
