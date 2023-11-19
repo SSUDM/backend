@@ -16,13 +16,6 @@ import java.util.Optional;
 public class RegisterAndLoginService {
     @Autowired private final UserRepository userRepository;
     @Autowired private final BCryptPasswordEncoder encoder;
-
-//    //회원가입 등록
-//    public void registerUser(RegisterRequest registerRequest) {
-//        User user = userRepository.findByName(registerRequest.getUserName());
-//        userRepository.save(registerRequest.toEntity());
-//    }
-
     /**
      * login할 때 사용하는 Email 중복 체크
      * 회원가입 기능 구현시 사용
@@ -81,18 +74,21 @@ public class RegisterAndLoginService {
         if (findByLoginEmail.isEmpty()) {
             return null;
         }
-        User user = findByLoginEmail.get();
 
-        //찾은 User의 password와 입력된 password가 다르면 return null
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
+        User user = findByLoginEmail.get();
+        System.out.println("user.getEmail() = " + user.getEmail());
+        System.out.println("user.getPassword() = " + user.getPassword());
+        System.out.println("user.getNickName() = " + user.getNickName());
+
+
+        // 비밀번호 검증: 입력받은 비밀번호와 암호화된 비밀번호를 비교
+        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
             return null;
         }
-
-//        // 비밀번호 검증: 입력받은 비밀번호와 암호화된 비밀번호를 비교
-//        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
+//        //찾은 User의 password와 입력된 password가 다르면 return null
+//        if (!user.getPassword().equals(loginRequest.getPassword())) {
 //            return null;
 //        }
-
         return user;
     }
 
@@ -133,7 +129,4 @@ public class RegisterAndLoginService {
 
         return findByEmail.get();
     }
-
-
-
 }
