@@ -1,11 +1,14 @@
 package com.DM.DeveloperMatching.service;
 
 import com.DM.DeveloperMatching.domain.Article;
+import com.DM.DeveloperMatching.domain.Member;
+import com.DM.DeveloperMatching.domain.MemberStatus;
 import com.DM.DeveloperMatching.domain.User;
 import com.DM.DeveloperMatching.dto.Article.AddArticleRequest;
 import com.DM.DeveloperMatching.dto.Article.ArticleResponse;
 import com.DM.DeveloperMatching.dto.Article.UpdateArticleRequest;
 import com.DM.DeveloperMatching.repository.ArticleRepository;
+import com.DM.DeveloperMatching.repository.MemberRepository;
 import com.DM.DeveloperMatching.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ public class ArticleService {
 
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
+    private final MemberRepository memberRepository;
 
     //모집 글 생성
     public ArticleResponse save(AddArticleRequest articleRequest, Long userId) {
@@ -61,6 +65,23 @@ public class ArticleService {
     //모집 글 삭제
     public void delete(Long articleId) {
         articleRepository.deleteById(articleId);
+    }
+
+    // 프로젝트 지원하기
+    public void applyToProject(Long userId, Long articleId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: "));
+
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다: "));
+
+        Member member = Member.builder()
+                .memberStatus(MemberStatus.WAITING)
+                .user(user)
+                .project(article.getProject())
+                .build();
+
+        memberRepository.save(member);
     }
 
 }
