@@ -2,6 +2,7 @@ package com.DM.DeveloperMatching.dto.Recommend;
 
 import com.DM.DeveloperMatching.domain.Article;
 import com.DM.DeveloperMatching.domain.Level;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ public class RecommendProjectDto {
     private List<String> recPart;
     private List<String> recTech;
     private Level recLevel;
+    @Lob
+    private Byte[] projectImg;
 
     public static RecommendProjectDto toDto(Article article) {
         RecommendProjectDto recommendDto = new RecommendProjectDto();
@@ -24,6 +27,7 @@ public class RecommendProjectDto {
         recommendDto.recPart = Arrays.asList(article.getRecPart().split(", \\s*"));
         recommendDto.recTech = Arrays.asList(article.getRecTech().split(", \\s*"));
         recommendDto.recLevel = article.getRecLevel();
+        recommendDto.projectImg = article.getProjectImg();
         return recommendDto;
     }
 }

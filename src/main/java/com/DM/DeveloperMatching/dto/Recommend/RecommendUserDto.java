@@ -15,20 +15,22 @@ import java.util.List;
 @Getter
 public class RecommendUserDto {
     private String userName;
-    private String phoneNum;
+    private String email;
     private String part;
     private List<String> tech;
     private Level level;
     private Double point;
+    private String introduction;
 
     public static RecommendUserDto toDto(User user) {
         RecommendUserDto recommendDto = new RecommendUserDto();
         recommendDto.userName = user.getUserName();
-        recommendDto.phoneNum = user.getPhoneNum();
+        recommendDto.email = user.getEmail();
         recommendDto.part = user.getPart();
         recommendDto.tech = Arrays.asList(user.getTech().split(", \\s*"));
         recommendDto.level = user.getLevel();
         recommendDto.point = user.getPoint();
+        recommendDto.introduction = user.getIntroduction();
         return recommendDto;
     }
 }
