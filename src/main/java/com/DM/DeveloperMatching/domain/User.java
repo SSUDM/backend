@@ -33,6 +33,10 @@ public class User {
     @Column(name = "level")
     private Level level;
 
+    @Lob
+    @Column(name = "user_img")
+    private Byte[] userImg;
+
     @Column(name = "point")
     private Double point; //double은 null타입을 가질 수 없으니까 double로..
 

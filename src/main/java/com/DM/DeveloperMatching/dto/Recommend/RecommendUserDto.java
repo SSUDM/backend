@@ -3,6 +3,7 @@ package com.DM.DeveloperMatching.dto.Recommend;
 import com.DM.DeveloperMatching.domain.Article;
 import com.DM.DeveloperMatching.domain.Level;
 import com.DM.DeveloperMatching.domain.User;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,8 @@ public class RecommendUserDto {
     private Level level;
     private Double point;
     private String introduction;
+    @Lob
+    private Byte[] userImg;
 
     public static RecommendUserDto toDto(User user) {
         RecommendUserDto recommendDto = new RecommendUserDto();
@@ -31,6 +34,7 @@ public class RecommendUserDto {
         recommendDto.level = user.getLevel();
         recommendDto.point = user.getPoint();
         recommendDto.introduction = user.getIntroduction();
+        recommendDto.userImg = user.getUserImg();
         return recommendDto;
     }
 }
