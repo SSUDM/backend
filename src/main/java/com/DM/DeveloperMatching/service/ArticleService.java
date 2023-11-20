@@ -26,14 +26,19 @@ public class ArticleService {
     private final MemberRepository memberRepository;
 
     //모집 글 생성
-    public ArticleResponse save(AddArticleRequest articleRequest, Long userId) {
+    public Article save(AddArticleRequest articleRequest, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("not found user"));
 
         Article savedArticle = articleRepository.save(articleRequest.toEntity(user));
-        ArticleResponse articleResponse = new ArticleResponse(savedArticle);
+        Member member = Member.builder()
+                .memberStatus(MemberStatus.ACCEPTED)
+                .user(user)
+                .project(savedArticle.getProject())
+                .build();
+        memberRepository.save(member);
 
-        return articleResponse;
+        return savedArticle;
     }
 
     //모집 글 목록 조회
