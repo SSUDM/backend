@@ -23,7 +23,9 @@ public class UserController {
     public ResponseEntity<UserResponseDto> saveResume(@RequestBody UserRequestDto userRequestDto) {
         Long userId = 1L;
         User savedUser = userService.saveResume(userRequestDto, userId);
-
+        for(String s : userRequestDto.getTech()) {
+            System.out.println(s);
+        }
         UserResponseDto userResponseDto = new UserResponseDto(savedUser);
 
         return ResponseEntity.status(HttpStatus.CREATED)

@@ -12,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -48,14 +51,23 @@ public class RecommendController {
         }
     }
 
-    @GetMapping(value = "/rec-teammate")
-    public ResponseEntity<List<RecommendUserDto>> recommendUser() {
-        Long userId = 1L;
-        List<User> users = recommendService.recommendUserByCS(userId);
-        List<RecommendUserDto> recommendDtos = users.stream()
-                .map(RecommendUserDto::toDto)
-                .collect(Collectors.toList());
+    @GetMapping(value = "/rec-teammate/{id}")
+    public ResponseEntity<Map<String, List<RecommendUserDto>>> recommendUser(@PathVariable Long id) {
+        List<List<User>> users = recommendService.recommendUserByCS(id);
+        Map<String, List<RecommendUserDto>> result = new HashMap<>();
+        for(List<User> userList : users) {
+            if(!result.containsKey(userList.get(0).getPart())) {
+                result.put(userList.get(0).getPart(), userList.stream()
+                        .map(RecommendUserDto::toDto)
+                        .collect(Collectors.toList()));
+            }
+            else {
+                result.get(userList.get(0).getPart()).addAll(userList.stream()
+                        .map(RecommendUserDto::toDto)
+                        .collect(Collectors.toList()));
+            }
+        }
         return ResponseEntity.status(HttpStatus.OK)
-                .body(recommendDtos);
+                .body(result);
     }
 }

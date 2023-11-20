@@ -1,7 +1,8 @@
 package com.DM.DeveloperMatching.dto.User;
 
 import com.DM.DeveloperMatching.domain.Level;
-import com.DM.DeveloperMatching.domain.User;
+import com.DM.DeveloperMatching.dto.User.Resume.CareerDto;
+import com.DM.DeveloperMatching.dto.User.Resume.HistoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class UserRequestDto {
     private Level level;
     private String introduction;
     private List<String> tech;
-    private String career;
+    private List<CareerDto> careerList;
+    private List<HistoryDto> history;
 }

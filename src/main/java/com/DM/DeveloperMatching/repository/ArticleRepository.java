@@ -8,10 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    @Query("SELECT a FROM Article a WHERE a.recPart IN :recPart")
-    List<Article> findAllByRecPart(List<String> recPart);
     @Query("SELECT a FROM Article a WHERE a.recLevel IN :recLevel")
     List<Article> findAllByRecLevel(List<Level> recLevel);
-    @Query("SELECT a FROM Article a WHERE a.recPart IN :recPart AND a.recLevel IN :recLevel")
-    List<Article> findByPartAndLevel(List<String> recPart, List<Level> recLevel);
 }

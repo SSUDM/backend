@@ -42,9 +42,6 @@ public class User {
     @Column(name = "tech")
     private String tech;
 
-    @Column(name = "career")
-    private String career;
-
     @OneToMany(mappedBy = "articleOwner")
     private List<Article> articles = new ArrayList<>();
 
@@ -54,8 +51,15 @@ public class User {
     @OneToMany(mappedBy = "likesUser", cascade = CascadeType.ALL)
     private List<Likes> likes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Career> careerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<History> history = new ArrayList<>();
+
     @Builder
-    public User(String userName, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
+    public User(String userName, String password, String phoneNum, String part, Level level, Double point,
+                String introduction, String tech, List<Career> careerList, List<History> history) {
         this.userName = userName;
         this.password = password;
         this.phoneNum = phoneNum;
@@ -64,19 +68,38 @@ public class User {
         this.point = point;
         this.introduction = introduction;
         this.tech = tech;
-        this.career = career;
+        this.careerList = careerList;
+        this.history = history;
     }
 
-    public void updateResume(String userName, String part, Level level, String introduction, String tech, String career) {
+    public void updateResume(String userName, String part, Level level, String introduction, String tech, List<Career> careerList,
+                             List<History> history) {
         this.userName = userName;
         this.part = part;
         this.level = level;
         this.introduction = introduction;
         this.tech = tech;
-        this.career = career;
+        this.careerList.addAll(careerList);
+        this.history.addAll(history);
     }
 
-    public void exam(List<Article> articles) {
-        this.articles = articles;
+    public void deleteCareer(String content) {
+        Career delete = new Career();
+        for(Career c : this.careerList) {
+            if(c.getContent().equals(content)) {
+                delete = c;
+            }
+        }
+        this.careerList.remove(delete);
+    }
+
+    public void deleteHistory(String title) {
+        History project = new History();
+        for(History p : this.history) {
+            if(p.getTitle().equals(title)) {
+                project = p;
+            }
+        }
+        this.history.remove(project);
     }
 }

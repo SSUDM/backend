@@ -42,6 +42,8 @@ public class RecommendService {
         List<Map.Entry<Article, Double>> entryList = new ArrayList<Map.Entry<Article, Double>>(smap.entrySet());
         Collections.sort(entryList, (obj1, obj2) -> obj2.getValue().compareTo(obj1.getValue()));
         List<Article> result = new ArrayList<>();
+        System.out.println(entryList);
+
         for(Map.Entry<Article, Double> entry : entryList) {
             result.add(entry.getKey());
         }
@@ -55,7 +57,9 @@ public class RecommendService {
         List<Article> projects = new ArrayList<>();
 
         if(!(recPart.isEmpty()) && recTech.isEmpty() && recLevel.isEmpty()) {
-            projects = articleRepository.findAllByRecPart(recPart);
+            String queryString = "SELECT a FROM Article a WHERE " + makePartQuery(recPart);
+            Query query = entityManager.createQuery(queryString, Article.class);
+            projects = query.getResultList();
         }
         else if(recPart.isEmpty() && !(recTech.isEmpty()) && recLevel.isEmpty()) {
             String queryString = makeTechQuery(recTech);
@@ -75,11 +79,9 @@ public class RecommendService {
             projects = query.getResultList();
         }
         else if(!(recPart.isEmpty()) && recTech.isEmpty() && !(recLevel.isEmpty())) {
-            List<Level> recLevels = recLevel.stream()
-                    .map(String::toUpperCase)
-                    .map(Level::valueOf)
-                    .collect(Collectors.toList());
-            projects = articleRepository.findByPartAndLevel(recPart, recLevels);
+            String queryString = "SELECT a FROM Article a WHERE " + makePartQuery(recPart) + makeLevelQuery(recLevel);
+            Query query = entityManager.createQuery(queryString, Article.class);
+            projects = query.getResultList();
         }
         else if(recPart.isEmpty() && !(recTech.isEmpty()) && !(recLevel.isEmpty())) {
             String queryString = makeTechQuery(recTech) + makeLevelQuery(recLevel);
@@ -87,7 +89,7 @@ public class RecommendService {
             projects = query.getResultList();
         }
         else {
-            String queryString = makeTechQuery(recTech) + makeLevelQuery(recLevel) + makePartQuery(recPart);
+            String queryString = makeTechQuery(recTech) + "AND " + makePartQuery(recPart) + makeLevelQuery(recLevel);
             Query query = entityManager.createQuery(queryString, Article.class);
             projects = query.getResultList();
         }
@@ -105,31 +107,29 @@ public class RecommendService {
         return result;
     }
 
-    public List<User> recommendUserByCS(Long uId) {
-        User user = userRepository.findById(uId)
+    public List<List<User>> recommendUserByCS(Long aId) {
+        Article article = articleRepository.findById(aId)
                 .orElseThrow(EntityNotFoundException::new);
+        List<String> parts = Arrays.asList(article.getRecPart().split(", \\s*"));
+        for(String s: parts) {
+            System.out.println(s);
+        }
+        List<List<User>> temp = new ArrayList<>();
 
-        List<Article> articles = user.getArticles();
-
-        Collections.sort(articles, Comparator.comparing(Article::getDue));
-        List<User> users = userRepository.findAll();
-
-        List<User> result = new ArrayList<>();
-
-        for (Article a : articles) {
-            Map<User, Double> smap = new HashMap<>();
-
-            for (User u : users) {
-                double similarity = cosineSimilarity(u, a);
-                smap.put(u, similarity);
+        for(String p : parts) {
+            temp.add(userRepository.findAllByPart(p));
+        }
+        List<List<User>> result = new ArrayList<>();
+        for(List<User> users : temp) {
+            Map<User, Double> tempMap = new HashMap<>();
+            for (User user : users) {
+                tempMap.put(user, cosineSimilarity(user, article));
             }
 
-            List<Map.Entry<User, Double>> entryList = new ArrayList<>(smap.entrySet());
-            entryList.sort((obj1, obj2) -> obj2.getValue().compareTo(obj1.getValue()));
+            List<User> keySet = new ArrayList<>(tempMap.keySet());
 
-            for (Map.Entry<User, Double> entry : entryList) {
-                result.add(entry.getKey());
-            }
+            keySet.sort((o1, o2) -> tempMap.get(o2).compareTo(tempMap.get(o1)));
+            result.add(keySet);
         }
 
         return result;
@@ -146,10 +146,10 @@ public class RecommendService {
 
     private String makePartQuery(List<String> recPart) {
         String inQueries = recPart.stream()
-                .map(part -> "'" + part.replace("'", "''") + "'") // 문자열은 싱글 쿼트로 감싸야 함
-                .collect(Collectors.joining(", "));
+                .map(part -> "a.recPart LIKE '%" + part + "%'")
+                .collect(Collectors.joining(" OR "));
 
-        return " AND a.recPart IN (" + inQueries + ")";
+        return inQueries;
     }
 
     private String makeLevelQuery(List<String> recLevel) {
@@ -161,20 +161,12 @@ public class RecommendService {
     }
 
     public List<Integer> vectorP(String part) {
-        if(part.equals("BackEnd")) {
-            return new ArrayList<Integer>(Arrays.asList(1, 0, 0, 0, 0));
+        final String[] parts = {"BackEnd", "FrontEnd", "Mobile", "Design"};
+        Map<String, Integer> vectors = new HashMap<>();
+        for (String p : parts) {
+            vectors.put(p, part.contains(p) ? 1 : 0);
         }
-        else if(part.equals("FrontEnd")) {
-            return new ArrayList<Integer>(Arrays.asList(0, 1, 0, 0, 0));
-        }
-        else if(part.equals("Android")) {
-            return new ArrayList<Integer>(Arrays.asList(0, 0, 1, 0, 0));
-        }
-        else if(part.equals("IOS")) {
-            return new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0));
-        }
-        else
-            return new ArrayList<>(Arrays.asList(0, 0, 0, 0, 1));
+        return new ArrayList<Integer>(vectors.values());
     }
 
     public List<Integer> vectorL(Level level) {
@@ -188,7 +180,8 @@ public class RecommendService {
     }
 
     public List<Integer> vectorTechBack(String tech) {
-        final String[] techs = {"Spring Boot", "Spring", "Jpa", "Django","Kotlin"};
+        final String[] techs = {"Java", "Spring", "Next.js", "Node.js","Go", "Kotlin", "Express", "MySQL", "MongoDB",
+        "Python", "Django", "PHP", "GraphQL", "AWS", "Kubernetes", "Docker", "Firebase", "Git", "C"};
         Map<String, Integer> vectors = new HashMap<>();
         for (String t : techs) {
             vectors.put(t, tech.contains(t) ? 1 : 0);
@@ -197,7 +190,25 @@ public class RecommendService {
     }
 
     public List<Integer> vectorTechFront(String tech) {
-        final String[] techs = {"React", "Vue.js", "Html", "Css", "Java Script"};
+        final String[] techs = {"React", "Vue.js", "JavaScript", "TypeScript", "Svelte", "Next.js", "Git", "Jest", "Figma"};
+        Map<String, Integer> vectors = new HashMap<>();
+        for (String t : techs) {
+            vectors.put(t, tech.contains(t) ? 1 : 0);
+        }
+        return new ArrayList<Integer>(vectors.values());
+    }
+
+    public List<Integer> vectorTechMobile(String tech) {
+        final String[] techs = {"Flutter", "Swift", "Kotlin", "ReactiveNative", "Unity", "Git"};
+        Map<String, Integer> vectors = new HashMap<>();
+        for (String t : techs) {
+            vectors.put(t, tech.contains(t) ? 1 : 0);
+        }
+        return new ArrayList<Integer>(vectors.values());
+    }
+
+    public List<Integer> vectorTechDesign(String tech) {
+        final String[] techs = {"Figma", "Zeplin", "git"};
         Map<String, Integer> vectors = new HashMap<>();
         for (String t : techs) {
             vectors.put(t, tech.contains(t) ? 1 : 0);
@@ -213,18 +224,21 @@ public class RecommendService {
         userVector.get(0).addAll(vectorL(user.getLevel()));
         userVector.add(vectorTechBack(user.getTech()));
         userVector.add(vectorTechFront(user.getTech()));
+        userVector.add(vectorTechMobile(user.getTech()));
+        userVector.add(vectorTechDesign(user.getTech()));
         List<List<Integer>> proVector = new ArrayList<>();
         proVector.add(vectorP(article.getRecPart()));
         proVector.get(0).addAll(vectorL(article.getRecLevel()));
         proVector.add(vectorTechBack(article.getRecTech()));
         proVector.add(vectorTechFront(article.getRecTech()));
+        proVector.add(vectorTechMobile(article.getRecTech()));
+        proVector.add(vectorTechDesign(article.getRecTech()));
 
         for(int i = 0; i < userVector.size(); i++) {
             if(!CS(userVector.get(i), proVector.get(i)).isNaN()) {
                 result += CS(userVector.get(i), proVector.get(i));
             }
         }
-
         return result;
     }
 

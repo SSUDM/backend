@@ -1,6 +1,8 @@
 package com.DM.DeveloperMatching.dto.User;
 
+import com.DM.DeveloperMatching.domain.Career;
 import com.DM.DeveloperMatching.domain.Level;
+import com.DM.DeveloperMatching.domain.History;
 import com.DM.DeveloperMatching.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,14 +20,16 @@ public class UserResponseDto {
     private Level level;
     private String introduction;
     private List<String> tech;
-    private String career;
+    private List<Career> careerList;
+    private List<History> history;
 
     public UserResponseDto(User user) {
         this.userName = user.getUserName();
         this.part = user.getPart();
         this.level = user.getLevel();
         this.introduction = user.getIntroduction();
-        this.tech = Arrays.asList(user.getTech().split(",\\s*"));
-        this.career = user.getCareer();
+        this.tech = Arrays.asList(user.getTech().split(", \\s*"));
+        this.careerList = user.getCareerList();
+        this.history = user.getHistory();
     }
 }

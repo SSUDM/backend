@@ -6,20 +6,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class RecommendProjectDto {
     private String title;
-    private String recPart;
-    private String recTech;
+    private List<String> recPart;
+    private List<String> recTech;
     private Level recLevel;
 
     public static RecommendProjectDto toDto(Article article) {
         RecommendProjectDto recommendDto = new RecommendProjectDto();
         recommendDto.title = article.getTitle();
-        recommendDto.recPart = article.getRecPart();
-        recommendDto.recTech = article.getRecTech();
+        recommendDto.recPart = Arrays.asList(article.getRecPart().split(", \\s*"));
+        recommendDto.recTech = Arrays.asList(article.getRecTech().split(", \\s*"));
         recommendDto.recLevel = article.getRecLevel();
         return recommendDto;
     }
