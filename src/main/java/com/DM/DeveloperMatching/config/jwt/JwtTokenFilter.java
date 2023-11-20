@@ -22,9 +22,11 @@ import java.util.List;
 public class JwtTokenFilter extends OncePerRequestFilter { //OncePerRequestFilter : 매번 들어갈 때 마다 체크 해주는 필터
 
     private final RegisterAndLoginService registerAndLoginService;
-    //    @Value("${jwt.secret-key}")
-//    private static final String secretKey;
+
+//    @Value("${jwt.secret-key}")
+//    private static String secretKey;
     private final String secretKey;
+
 
 
     @Override
@@ -42,7 +44,7 @@ public class JwtTokenFilter extends OncePerRequestFilter { //OncePerRequestFilte
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println("authorizationHeader = " + authorizationHeader);
+
         //전송받은 Token에서 'Bearer' 뒷부분(Jwt Token)만 추출
         String jwtToken = authorizationHeader.split(" ")[1];
         System.out.println("jwtToken = " + jwtToken);

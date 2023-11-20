@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     private final RegisterAndLoginService registerAndLoginService;
-//    @Value("${jwt.secret-key}")
-//    private static String secretKey;
+    @Value("${jwt.secret-key}")
+    private static String secretKey;
 
 //    @PostMapping("/login")
 //    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
@@ -56,7 +56,7 @@ public class LoginController {
         //로그인을 성공했으면 이제 Jwt 토큰을 발급해준다.
         String secretKey = "this+is+my+secretKey+secretKey+secretKey+secretKey"; //시크릿 키 들어갈 자리
 
-        long expireTimeMs = 1000 * 60 * 30;    // Token 유효 시간 = 30분
+        long expireTimeMs = 1000 * 60 * 60;    // Token 유효 시간 = 60분
         String jwtToken = JwtTokenUtils.createToken(loginUser.getUId(), loginUser.getEmail(), secretKey, expireTimeMs);
 
 //        Claims claims = JwtTokenUtils.extractClaims(jwtToken, secretKey);

@@ -22,9 +22,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final RegisterAndLoginService registerAndLoginService;
-
     @Value("${jwt.secret-key}")
-    private static String secretKey;
+    private String secretKey;
+
+//    private static String secretKey =  " ";
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(@NonNull final HttpSecurity httpSecurity) throws Exception {

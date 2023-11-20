@@ -1,9 +1,6 @@
 package com.DM.DeveloperMatching.service;
 
-import com.DM.DeveloperMatching.domain.Article;
-import com.DM.DeveloperMatching.domain.Member;
-import com.DM.DeveloperMatching.domain.MemberStatus;
-import com.DM.DeveloperMatching.domain.User;
+import com.DM.DeveloperMatching.domain.*;
 import com.DM.DeveloperMatching.dto.Article.AddArticleRequest;
 import com.DM.DeveloperMatching.dto.Article.ArticleResponse;
 import com.DM.DeveloperMatching.dto.Article.UpdateArticleRequest;
@@ -40,6 +37,15 @@ public class ArticleService {
 
         return savedArticle;
     }
+//    //모집 글 생성
+//    public ArticleResponse save(AddArticleRequest articleRequest, Long userId) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new IllegalArgumentException("not found user"));
+//        Article savedArticle = articleRepository.save(articleRequest.toEntity(user));
+//        ArticleResponse articleResponse = new ArticleResponse(savedArticle);
+//        return articleResponse;
+//    }
+
 
     //모집 글 목록 조회
     public List<Article> findAll() {
@@ -47,11 +53,10 @@ public class ArticleService {
     }
 
     //모집 글 단건 조회
-    public ArticleResponse findOne(Long userId) {
+    public Article findOne(Long userId) {
         Article article = articleRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("not found article"));
-        ArticleResponse articleResponse = new ArticleResponse(article);
 
-        return articleResponse;
+        return article;
     }
 
     //모집 글 수정
@@ -71,22 +76,4 @@ public class ArticleService {
     public void delete(Long articleId) {
         articleRepository.deleteById(articleId);
     }
-
-    // 프로젝트 지원하기
-    public void applyToProject(Long userId, Long articleId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: "));
-
-        Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다: "));
-
-        Member member = Member.builder()
-                .memberStatus(MemberStatus.WAITING)
-                .user(user)
-                .project(article.getProject())
-                .build();
-
-        memberRepository.save(member);
-    }
-
 }

@@ -24,6 +24,10 @@ public class Member {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public void update(MemberStatus memberStatus) {
+        this.memberStatus = memberStatus;
+    }
+
     @Builder
     public Member(MemberStatus memberStatus, User user, Project project) {
         this.memberStatus = memberStatus;

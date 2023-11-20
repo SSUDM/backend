@@ -46,7 +46,7 @@ public class JwtTokenUtils {
             token = token.substring(7);
         }
         Claims body = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        System.out.println("body = " + body.getIssuedAt());
+        System.out.println("body.getIssuedAt() = " + body.getIssuedAt());
         System.out.println("body.getExpiration() = " + body.getExpiration());
         return body;
     }
@@ -73,14 +73,14 @@ public class JwtTokenUtils {
     public static boolean isExpired(String jwtToken, String secretKey) {
         try {
             Claims claims = extractClaims(jwtToken, secretKey);
-//            System.out.println("claims = " + claims);
+            System.out.println("claims = " + claims);
 
             Date expiration = claims.getExpiration();
-//            System.out.println("expiration = " + expiration);
+            System.out.println("expiration = " + expiration);
 
             Date now = new Date();
-//            System.out.println("Token expiration time: " + expiration);
-//            System.out.println("Current time: " + now);
+            System.out.println("Token expiration time: " + expiration);
+            System.out.println("Current time: " + now);
 
             return expiration.before(now);
         } catch (Exception e) {
@@ -89,4 +89,3 @@ public class JwtTokenUtils {
         }
     }
 }
-

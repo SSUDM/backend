@@ -1,6 +1,7 @@
 package com.DM.DeveloperMatching.dto.User;
 
 import com.DM.DeveloperMatching.domain.Level;
+import com.DM.DeveloperMatching.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,8 @@ public class UserRequestDto {
     private String introduction;
     private String tech;
     private String career;
+
+    public UserRequestDto(String userName) {
+        this.userName = userName;
+    }
 }

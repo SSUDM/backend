@@ -21,7 +21,6 @@ public class Project {
     @Column(name = "project_status")
     private ProjectStatus projectStatus;
 
-    //    @Column(name = "likes")
     private int likes;
 
     @OneToMany(mappedBy = "project",cascade = CascadeType.ALL) //양방향 잡을라고
@@ -31,8 +30,12 @@ public class Project {
     private Article article;                                      //@JsonBackReference를 사용하면 Project에서
     //article 접근도 안됨
 
+    public void updateProjectStatus(ProjectStatus projectStatus) {
+        this.projectStatus = projectStatus;
+    }
+
     @Builder
-    public Project(int memberCnt, ProjectStatus projectStatus,int likes) {
+    public Project(int memberCnt, ProjectStatus projectStatus, int likes) {
         this.memberCnt = memberCnt;
         this.projectStatus = projectStatus;
         this.likes = likes;
