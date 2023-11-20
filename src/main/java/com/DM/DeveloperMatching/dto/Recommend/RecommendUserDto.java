@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class RecommendUserDto {
+    private Long uId;
     private String userName;
     private String email;
     private String part;
@@ -27,6 +28,7 @@ public class RecommendUserDto {
 
     public static RecommendUserDto toDto(User user) {
         RecommendUserDto recommendDto = new RecommendUserDto();
+        recommendDto.uId = user.getUId();
         recommendDto.userName = user.getUserName();
         recommendDto.email = user.getEmail();
         recommendDto.part = user.getPart();

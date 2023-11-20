@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class RecommendProjectDto {
+    private Long aId;
     private String title;
     private List<String> recPart;
     private List<String> recTech;
@@ -23,6 +24,7 @@ public class RecommendProjectDto {
 
     public static RecommendProjectDto toDto(Article article) {
         RecommendProjectDto recommendDto = new RecommendProjectDto();
+        recommendDto.aId = article.getAId();
         recommendDto.title = article.getTitle();
         recommendDto.recPart = Arrays.asList(article.getRecPart().split(", \\s*"));
         recommendDto.recTech = Arrays.asList(article.getRecTech().split(", \\s*"));
