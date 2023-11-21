@@ -7,15 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class UpdateArticleRequest {
     private String title;
-    private int maximumMember;
-    private String recPart;
-    private String recTech;
+    private Integer maximumMember;
+    private List<String> recPart;
+    private List<String> recTech;
     private Level recLevel;
     private String during;
     private Date due;

@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,9 +18,9 @@ import java.util.Date;
 public class AddArticleRequest {
     private User articleOwner;
     private String title;
-    private int maximumMember;
-    private String recPart;
-    private String recTech;
+    private Integer maximumMember;
+    private List<String> recPart;
+    private List<String> recTech;
     private Level recLevel;
     private String during;
     private Date due;
@@ -27,6 +29,8 @@ public class AddArticleRequest {
     private Byte[] projectImg;
 
     public Article toEntity(User user) {
+        String recPart = String.join(", ", this.recPart);
+        String recTech = String.join(", ", this.recTech);
         return Article.builder()
                 .articleOwner(user)
                 .title(title)

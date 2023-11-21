@@ -25,7 +25,7 @@ public class Article {
     private String content;
 
     @Column(name = "maximum_member")
-    private int maximumMember;
+    private Integer maximumMember;
 
     @Column(name = "recruit_part")
     private String recPart; //list로 해야하지만 List<String> 사용 불가 table이나 class를 하나 더 만들어야할듯
@@ -51,7 +51,7 @@ public class Article {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    public void update(String title, int maximumMember, String recPart, String recTech, Level recLevel,
+    public void update(String title, Integer maximumMember, String recPart, String recTech, Level recLevel,
                        String during, Date due, String content, Byte[] projectImg) {
         this.title = title;
         this.maximumMember = maximumMember;
@@ -65,7 +65,7 @@ public class Article {
     }
 
     @Builder
-    public Article(User articleOwner, String title, int maximumMember, String recPart, String recTech, Level recLevel,
+    public Article(User articleOwner, String title, Integer maximumMember, String recPart, String recTech, Level recLevel,
                    String during, Date due, String content, Byte[] projectImg) {
         this.articleOwner = articleOwner;
         this.title = title;

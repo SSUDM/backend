@@ -57,9 +57,10 @@ public class ArticleService {
     public Article update(Long articleId, UpdateArticleRequest updateArticleRequest) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("not found article"));
-
+        String result1 = String.join(", ", updateArticleRequest.getRecPart());
+        String result2 = String.join(", ", updateArticleRequest.getRecTech());
         article.update(updateArticleRequest.getTitle(), updateArticleRequest.getMaximumMember(),
-                updateArticleRequest.getRecPart(), updateArticleRequest.getRecTech(),
+                result1, result2,
                 updateArticleRequest.getRecLevel(), updateArticleRequest.getDuring(), updateArticleRequest.getDue()
                 , updateArticleRequest.getContent(), updateArticleRequest.getProjectImg());
 

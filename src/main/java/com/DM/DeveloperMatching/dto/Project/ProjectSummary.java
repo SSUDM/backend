@@ -17,7 +17,7 @@ public class ProjectSummary {
     public ProjectSummary(ArticleResponse article) {
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.part = article.getRecPart();
-        this.tech = article.getRecTech();
+        this.part = String.join(", ", article.getRecPart());
+        this.tech = String.join(", ", article.getRecTech());
     }
 }

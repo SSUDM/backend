@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,9 +17,9 @@ import java.util.Date;
 public class ArticleResponse {
     private Long articleOwnerId;
     private String title;
-    private int maximumMember;
-    private String recPart;
-    private String recTech;
+    private Integer maximumMember;
+    private List<String> recPart;
+    private List<String> recTech;
     private Level recLevel;
     private String during;
     private Date due;
@@ -29,8 +31,8 @@ public class ArticleResponse {
         this.articleOwnerId = article.getArticleOwner().getUId();
         this.title = article.getTitle();
         this.maximumMember = article.getMaximumMember();
-        this.recPart = article.getRecPart();
-        this.recTech = article.getRecTech();
+        this.recPart = Arrays.asList(article.getRecPart().split(", \\s*"));
+        this.recTech = Arrays.asList(article.getRecTech().split(", \\s*"));
         this.recLevel = article.getRecLevel();
         this.during = article.getDuring();
         this.due = article.getDue();
