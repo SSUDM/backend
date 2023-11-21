@@ -14,11 +14,12 @@ public class User {
     @Column(name = "user_id")
     private Long uId;
 
-    @Column(name = "user_name",nullable = false)
+    @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "nickname",nullable = false)
+    @Column(name = "nickname", nullable = false)
     private String nickName;
+
 
     @Column(name = "email",nullable = false)
     private String email;
@@ -36,6 +37,10 @@ public class User {
     @Column(name = "level")
     private Level level;
 
+    @Lob
+    @Column(name = "user_img")
+    private Byte[] userImg;
+
     @Column(name = "point")
     private Double point; //double은 null타입을 가질 수 없으니까 double로..
 
@@ -45,33 +50,27 @@ public class User {
     @Column(name = "tech")
     private String tech;
 
-    @Column(name = "career")
-    private String career;
+//    @Column(name = "career")
+//    private String career;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private UserRole userRole;
+    @OneToMany(mappedBy = "articleOwner")
+    private List<Article> articles = new ArrayList<>();
 
-    /*@OneToMany(mappedBy = "articleOwner")
-    private List<Article> articles = new ArrayList<>();*/
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)   //양방향 잡을라고
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)   //양방향 잡을라고
     private List<Member> userInMember = new ArrayList<>();
 
     @OneToMany(mappedBy = "likesUser", cascade = CascadeType.ALL)
     private List<Likes> likes = new ArrayList<>();
 
-    public void updateResume(String userName, String part, Level level, String introduction, String tech, String career) {
-        this.userName = userName;
-        this.part = part;
-        this.level = level;
-        this.introduction = introduction;
-        this.tech = tech;
-        this.career = career;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Career> careerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<History> history = new ArrayList<>();
 
     @Builder
-    public User(String userName, String nickName, String email, String password, String phoneNum, String part, Level level, Double point, String introduction, String tech, String career) {
+    public User(String userName, String nickName,String email, String password, String phoneNum, String part, Level level, Double point,
+                String introduction, String tech, List<Career> careerList, List<History> history) {
         this.userName = userName;
         this.nickName = nickName;
         this.email = email;
@@ -82,8 +81,39 @@ public class User {
         this.point = point;
         this.introduction = introduction;
         this.tech = tech;
-        this.career = career;
+//        this.career = career;
+        this.careerList = careerList;
+        this.history = history;
     }
 
+    public void updateResume(String userName, String part, Level level, String introduction, String tech, List<Career> careerList,
+                             List<History> history) {
+        this.userName = userName;
+        this.part = part;
+        this.level = level;
+        this.introduction = introduction;
+        this.tech = tech;
+        this.careerList.addAll(careerList);
+        this.history.addAll(history);
+    }
 
+    public void deleteCareer(String content) {
+        Career delete = new Career();
+        for(Career c : this.careerList) {
+            if(c.getContent().equals(content)) {
+                delete = c;
+            }
+        }
+        this.careerList.remove(delete);
+    }
+
+    public void deleteHistory(String title) {
+        History project = new History();
+        for(History p : this.history) {
+            if(p.getTitle().equals(title)) {
+                project = p;
+            }
+        }
+        this.history.remove(project);
+    }
 }

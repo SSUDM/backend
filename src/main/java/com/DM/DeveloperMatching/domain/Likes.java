@@ -27,5 +27,4 @@ public class Likes {
         this.likesUser = likesUser;
         this.likesProject = likesProject;
     }
-
 }

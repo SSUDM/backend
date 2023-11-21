@@ -19,7 +19,7 @@ public class ArticleResponse {
     private String recPart;
     private String recTech;
     private Level recLevel;
-    private Date during;
+    private String during;
     private Date due;
     private String content;
     @Lob

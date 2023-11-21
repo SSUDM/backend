@@ -37,8 +37,8 @@ public class Article {
     @Column(name = "recruit_level")
     private Level recLevel;
 
-    @Temporal(TemporalType.DATE)
-    private Date during;
+    @Column(name = "during")
+    private String during;
 
     @Temporal(TemporalType.DATE)
     private Date due;
@@ -52,7 +52,7 @@ public class Article {
     private Project project;
 
     public void update(String title, int maximumMember, String recPart, String recTech, Level recLevel,
-                       Date during, Date due, String content, Byte[] projectImg) {
+                       String during, Date due, String content, Byte[] projectImg) {
         this.title = title;
         this.maximumMember = maximumMember;
         this.recPart = recPart;
@@ -66,7 +66,7 @@ public class Article {
 
     @Builder
     public Article(User articleOwner, String title, int maximumMember, String recPart, String recTech, Level recLevel,
-                   Date during, Date due, String content, Byte[] projectImg) {
+                   String during, Date due, String content, Byte[] projectImg) {
         this.articleOwner = articleOwner;
         this.title = title;
         this.maximumMember = maximumMember;

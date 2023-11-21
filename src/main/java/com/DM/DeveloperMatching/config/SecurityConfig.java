@@ -1,10 +1,11 @@
 package com.DM.DeveloperMatching.config;
 
 import com.DM.DeveloperMatching.config.jwt.JwtTokenFilter;
-import com.DM.DeveloperMatching.domain.UserRole;
+//import com.DM.DeveloperMatching.domain.UserRole;
 import com.DM.DeveloperMatching.service.RegisterAndLoginService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +22,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final RegisterAndLoginService registerAndLoginService;
-    //시크릿 키 들어갈 자리
+    @Value("${jwt.secret-key}")
+    private String secretKey;
+
+//    private static String secretKey =  " ";
 
 
     @Bean
@@ -31,13 +35,12 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(authorize ->
-                        authorize
-                                .requestMatchers("/jwt-api-login/info").authenticated()
-                                .requestMatchers("/jwt-api-login/admin/**").hasAuthority(UserRole.ADMIN.name())
-                                .anyRequest().permitAll()
+                                authorize
+//                                .requestMatchers("/jwt-login/info").authenticated()
+//                                .requestMatchers("/jwt-login/admin/**").hasAuthority(UserRole.ADMIN.name())
+                                        .anyRequest().permitAll()
                 )
-                .addFilterBefore(new JwtTokenFilter(registerAndLoginService, secretKey),
-                        UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtTokenFilter(registerAndLoginService, secretKey), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

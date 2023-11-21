@@ -20,7 +20,7 @@ public class AddArticleRequest {
     private String recPart;
     private String recTech;
     private Level recLevel;
-    private Date during;
+    private String during;
     private Date due;
     private String content;
     @Lob
@@ -37,6 +37,7 @@ public class AddArticleRequest {
                 .due(due)
                 .recLevel(recLevel)
                 .content(content)
+                .projectImg(projectImg)
                 .build();
     }
 }

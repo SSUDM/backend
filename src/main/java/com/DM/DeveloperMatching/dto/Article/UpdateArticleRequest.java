@@ -12,13 +12,12 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 public class UpdateArticleRequest {
-
     private String title;
     private int maximumMember;
     private String recPart;
     private String recTech;
     private Level recLevel;
-    private Date during;
+    private String during;
     private Date due;
     private String content;
     @Lob
