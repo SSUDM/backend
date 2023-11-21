@@ -34,8 +34,8 @@ public class ArticleController {
     @GetMapping("/current-user")
     public void getCurrentUser() {
         SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication1 = context.getAuthentication();
-        System.out.println("authentication = " + authentication1);
+        Authentication authentication = context.getAuthentication();
+        System.out.println("authentication = " + authentication);
     }
 
     //모집 글 생성

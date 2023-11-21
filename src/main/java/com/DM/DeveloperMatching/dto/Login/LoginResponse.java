@@ -15,4 +15,5 @@ public class LoginResponse {
     private HttpStatus status;
     private String message;
     private String token;
+    private Long uId;
 }

@@ -4,6 +4,7 @@ import com.DM.DeveloperMatching.domain.Level;
 import com.DM.DeveloperMatching.domain.User;
 import com.DM.DeveloperMatching.dto.Project.ProjectSummary;
 import com.DM.DeveloperMatching.service.ProjectService;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ public class UserInfoResponse {
     private String userName;
     private String part;
     private Level level;
+    @Lob
+    //private Byte[] userImg;
     private Double point;
     private String introduction;
     private String tech;
@@ -27,6 +30,7 @@ public class UserInfoResponse {
         this.userName = user.getUserName();
         this.part = user.getPart();
         this.level = user.getLevel();
+        //this.userImg = user.getUserImg();
         this.point = user.getPoint();
         this.introduction = user.getIntroduction();
         this.tech = user.getTech();
