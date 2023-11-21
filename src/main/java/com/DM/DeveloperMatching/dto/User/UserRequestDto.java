@@ -3,6 +3,7 @@ package com.DM.DeveloperMatching.dto.User;
 import com.DM.DeveloperMatching.domain.Level;
 import com.DM.DeveloperMatching.dto.User.Resume.CareerDto;
 import com.DM.DeveloperMatching.dto.User.Resume.HistoryDto;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,6 @@ public class UserRequestDto {
     private List<String> tech;
     private List<CareerDto> careerList;
     private List<HistoryDto> history;
+    @Lob
+    private Byte[] userImg;
 }

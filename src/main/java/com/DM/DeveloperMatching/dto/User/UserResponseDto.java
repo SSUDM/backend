@@ -4,6 +4,7 @@ import com.DM.DeveloperMatching.domain.Career;
 import com.DM.DeveloperMatching.domain.Level;
 import com.DM.DeveloperMatching.domain.History;
 import com.DM.DeveloperMatching.domain.User;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class UserResponseDto {
+    private Long uId;
     private String userName;
     private String part;
     private Level level;
@@ -22,8 +24,11 @@ public class UserResponseDto {
     private List<String> tech;
     private List<Career> careerList;
     private List<History> history;
+    @Lob
+    private Byte[] userImg;
 
     public UserResponseDto(User user) {
+        this.uId = user.getUId();
         this.userName = user.getUserName();
         this.part = user.getPart();
         this.level = user.getLevel();
@@ -31,5 +36,6 @@ public class UserResponseDto {
         this.tech = Arrays.asList(user.getTech().split(", \\s*"));
         this.careerList = user.getCareerList();
         this.history = user.getHistory();
+        this.userImg = user.getUserImg();
     }
 }
