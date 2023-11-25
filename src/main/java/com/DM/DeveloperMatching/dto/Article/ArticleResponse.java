@@ -17,6 +17,8 @@ import java.util.List;
 public class ArticleResponse {
     private Long aId;
     private Long articleOwnerId;
+    private String articleOwnerNickName;
+    private Byte[] articleOwnerImg;
     private String title;
     private Integer maximumMember;
     private List<String> recPart;
@@ -31,6 +33,8 @@ public class ArticleResponse {
     public ArticleResponse(Article article) {
         this.aId = article.getAId();
         this.articleOwnerId = article.getArticleOwner().getUId();
+        this.articleOwnerNickName = article.getArticleOwner().getNickName();
+        this.articleOwnerImg = article.getArticleOwner().getUserImg();
         this.title = article.getTitle();
         this.maximumMember = article.getMaximumMember();
         this.recPart = Arrays.asList(article.getRecPart().split(", \\s*"));

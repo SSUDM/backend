@@ -2,7 +2,6 @@ package com.DM.DeveloperMatching.service;
 
 import com.DM.DeveloperMatching.domain.*;
 import com.DM.DeveloperMatching.dto.Article.AddArticleRequest;
-import com.DM.DeveloperMatching.dto.Article.ArticleResponse;
 import com.DM.DeveloperMatching.dto.Article.UpdateArticleRequest;
 import com.DM.DeveloperMatching.repository.ArticleRepository;
 import com.DM.DeveloperMatching.repository.MemberRepository;
